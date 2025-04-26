@@ -11,25 +11,19 @@
     <h2>Your Photo:</h2>
     <img [src]="capturedImage" alt="Captured Bird" />
 
-    <h2>Professional Image:</h2>
     <ng-container *ngIf="professionalImageUrl">
+      <h2>Professional Image:</h2>
       <img [src]="professionalImageUrl" alt="Professional Bird Image" />
     </ng-container>
   </div>
 
   <div class="bird-info">
     <h2>About the {{ birdName }}:</h2>
-    <p>{{ birdInfo }}</p>
+    <p>Genus: {{ birdGenus }}</p>
+    <p>Scientific name: {{ scientificName }}</p>
+
   </div>
 
-  <ion-card *ngIf="birdFunFact">
-    <ion-card-header>
-      <ion-card-title>Fun Fact</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      {{ birdFunFact }}
-    </ion-card-content>
-  </ion-card>
 
   <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top">
     Save to Collection

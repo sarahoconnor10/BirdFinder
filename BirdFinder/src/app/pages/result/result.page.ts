@@ -3,11 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
-import { BirdInfoService } from 'src/app/services/bird-info.service';
+import { BirdInfoService, BirdDetails } from 'src/app/services/bird-info.service';
 import { BirdCollectionService } from 'src/app/services/bird-collection.service';
 import { ToastController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
+
+interface SavedBird {
+  name: string;
+  scientificName: string;
+  genus: string;
+  image: string;
+  date: string;
+}
 
 @Component({
   selector: 'app-result',
@@ -21,9 +29,9 @@ export class ResultPage {
   birdName: string = "Unknown";
   capturedImage: string = "";
   professionalImageUrl: string = "";
-  birdInfo: string = "Unknown";
   scientificName: string = "Unknown";
   birdFunFact = "";
+  birdGenus: string = "";
 
   constructor(private router: Router,
     private birdInfoService: BirdInfoService,
@@ -45,33 +53,24 @@ export class ResultPage {
 
   async loadBirdInfo() {
     try {
-      const info = await this.birdInfoService.getBirdInfo(this.birdName);
+      const birdDetails: BirdDetails = await this.birdInfoService.getBirdDetails(this.birdName);
 
-      console.log('Wikipedia info:', info);
+      this.professionalImageUrl = birdDetails.imageUrl || '';
+      this.birdGenus = birdDetails.genus;
+      this.scientificName = birdDetails.scientificName || 'Unknown';
 
-      this.professionalImageUrl = info.thumbnail?.source || '';
-      this.birdInfo = info.extract || 'No additional information found.';
-      this.scientificName = this.extractScientificName(info.extract);
-      this.loadBirdFunFact();
+      console.log('Bird details loaded:', birdDetails);
 
     } catch (error) {
       console.error("Error fetching bird info:", error);
-      this.birdInfo = "Could not find information about this bird.";
     }
   }
 
-  extractScientificName(text: string): string {
-    if (!text) return '';
-
-    // find first italicized word 
-    const match = text.match(/\b([A-Z][a-z]+ [a-z]+)\b/);
-
-    return match ? match[1] : 'Unknown';
-  }
-
   async saveToCollection() {
-    const bird = {
+    const bird: SavedBird = {
       name: this.birdName,
+      scientificName: this.scientificName,
+      genus: this.birdGenus,
       image: this.capturedImage,
       date: new Date().toISOString()
     };
@@ -88,17 +87,4 @@ export class ResultPage {
 
     await toast.present();
   }
-
-  loadBirdFunFact() {
-    const facts = [
-      `${this.birdName}s can fly up to 50 km/h!`,
-      `${this.birdName}s often migrate across continents.`,
-      `${this.birdName}s are known for their unique songs.`,
-      `A group of ${this.birdName}s is called a flock.`,
-      `The ${this.birdName} can live up to 15 years in the wild.`
-    ];
-
-    this.birdFunFact = facts[Math.floor(Math.random() * facts.length)];
-  }
-
 }
