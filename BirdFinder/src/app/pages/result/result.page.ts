@@ -5,6 +5,9 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/a
 import { Router } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { BirdInfoService } from 'src/app/services/bird-info.service';
+import { BirdCollectionService } from 'src/app/services/bird-collection.service';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-result',
@@ -21,7 +24,9 @@ export class ResultPage {
   scientificName: string = "Unknown";
 
   constructor(private router: Router,
-    private birdInfoService: BirdInfoService
+    private birdInfoService: BirdInfoService,
+    private birdCollectionService: BirdCollectionService,
+    private toastController: ToastController
   ) {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras.state as { birdName: string, capturedImage: string };
@@ -58,6 +63,26 @@ export class ResultPage {
     const match = text.match(/\b([A-Z][a-z]+ [a-z]+)\b/);
 
     return match ? match[1] : 'Unknown';
+  }
+
+  async saveToCollection() {
+    const bird = {
+      name: this.birdName,
+      image: this.capturedImage,
+      date: new Date().toISOString()
+    };
+
+    this.birdCollectionService.saveBird(bird);
+    console.log('Bird saved:', bird);
+
+    const toast = await this.toastController.create({
+      message: 'Bird saved to collection!',
+      duration: 2000,
+      color: 'success',
+      position: 'bottom'
+    });
+
+    await toast.present();
   }
 
 }

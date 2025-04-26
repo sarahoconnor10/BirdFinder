@@ -21,6 +21,9 @@
     <h2>About the {{ birdName }}:</h2>
     <p>{{ birdInfo }}</p>
   </div>
+  <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top">
+    Save to Collection
+  </ion-button>
   <ion-button routerLink="/home" expand="block" class="ion-margin-top">
     Go Home
   </ion-button>
