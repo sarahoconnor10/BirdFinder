@@ -25,6 +25,9 @@
   <h2 class="ion-margin-top">Local Species</h2>
   <ion-list *ngIf="localSpecies.length > 0; else noLocal">
     <ion-item *ngFor="let species of localSpecies">
+      <ion-thumbnail slot="start" *ngIf="species.image">
+        <img [src]="species.image" alt="{{ species.name }}" />
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ species.name }}</h2>
         <p>Observed nearby</p>

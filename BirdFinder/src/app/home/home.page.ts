@@ -5,6 +5,7 @@ import { BirdCollectionService } from '../services/bird-collection.service';
 import { CommonModule } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
 import { EbirdService } from '../services/ebird.service';
+import { BirdImageService } from '../services/bird-image.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class HomePage {
 
 
   constructor(private birdCollectionService: BirdCollectionService,
-    private ebirdService: EbirdService
+    private ebirdService: EbirdService,
+    private birdImageService: BirdImageService
   ) { }
 
   ionViewWillEnter() {
@@ -54,15 +56,26 @@ export class HomePage {
       const birds = await this.ebirdService.getNearbyBirds(lat, lon);
       console.log('Nearby birds:', birds);
 
-      this.localSpecies = birds.map(bird => ({
-        name: bird.comName,
-        scientificName: bird.sciName,
-        dateObserved: bird.obsDt
-      }));
+      const birdPromises = birds.map(async (bird) => {
+        const imageUrl = await this.birdImageService.getBirdImageUrl(bird.comName);
+
+        return {
+          name: bird.comName,
+          scientificName: bird.sciName,
+          dateObserved: bird.obsDt,
+          image: imageUrl
+        };
+      });
+
+      this.localSpecies = await Promise.all(birdPromises);
+
+      console.log('Local species with images:', this.localSpecies);
     } catch (error) {
       console.error('Error fetching local birds:', error);
       this.localSpecies = [];
     }
   }
+
+
 
 }
