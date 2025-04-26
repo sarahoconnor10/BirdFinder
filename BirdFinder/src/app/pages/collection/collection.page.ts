@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/angular/standalone';
 import { BirdCollectionService } from 'src/app/services/bird-collection.service';
+
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.page.html',
   styleUrls: ['./collection.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption]
 })
+
 export class CollectionPage implements OnInit {
   birds: any[] = [];
 
@@ -27,4 +29,8 @@ export class CollectionPage implements OnInit {
     console.log('Loaded birds:', this.birds);
   }
 
+  deleteBird(birdToDelete: any) {
+    this.birds = this.birds.filter(bird => bird !== birdToDelete);
+    this.birdCollectionService.saveAllBirds(this.birds);
+  }
 }

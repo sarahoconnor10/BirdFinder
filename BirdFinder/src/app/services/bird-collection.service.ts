@@ -18,4 +18,8 @@ export class BirdCollectionService {
     birds.push(bird);
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(birds));
   }
+
+  saveAllBirds(birds: any[]): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(birds));
+  }
 }

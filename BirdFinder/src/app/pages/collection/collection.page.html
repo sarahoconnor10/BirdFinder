@@ -6,16 +6,25 @@
 
 <ion-content class="ion-padding">
   <ion-list *ngIf="birds.length > 0; else noBirds">
-    <ion-item *ngFor="let bird of birds">
-      <ion-thumbnail slot="start">
-        <img [src]="bird.image" />
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{ bird.name }}</h2>
-        <p>Saved on {{ bird.date | date:'medium' }}</p>
-      </ion-label>
-    </ion-item>
+    <ion-item-sliding *ngFor="let bird of birds">
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img [src]="bird.image" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ bird.name }}</h2>
+          <p>Saved on {{ bird.date | date:'medium' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteBird(bird)">
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
+
 
   <ng-template #noBirds>
     <p>No birds saved yet. Go find some!</p>
