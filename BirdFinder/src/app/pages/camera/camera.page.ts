@@ -8,6 +8,7 @@ import { RouterLinkWithHref } from '@angular/router';
 import { CameraService } from 'src/app/services/camera.service';
 import { LoadingController } from '@ionic/angular';
 import { BirdIdentificationService } from 'src/app/services/bird-identification.service';
+import { Router } from '@angular/router';
 
 addIcons({
   "close-outline": closeOutline,
@@ -29,7 +30,8 @@ export class CameraPage implements OnInit {
 
   constructor(private cameraService: CameraService,
     private loadingController: LoadingController,
-    private birdIdentificationService: BirdIdentificationService
+    private birdIdentificationService: BirdIdentificationService,
+    private router: Router
   ) { }
 
   ngOnInit() { }
@@ -62,6 +64,8 @@ export class CameraPage implements OnInit {
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
       console.log('Identified Bird:', birdName);
 
+      this.goToResult(birdName);
+
       await loading.dismiss();
 
     } catch (error) {
@@ -86,6 +90,8 @@ export class CameraPage implements OnInit {
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
       console.log('Identified Bird:', birdName);
 
+      this.goToResult(birdName);
+
       await loading.dismiss();
 
     } catch (error) {
@@ -97,6 +103,14 @@ export class CameraPage implements OnInit {
 
   toggleFlash() {
     console.log("Flash toggled");
+  }
+
+  goToResult(birdName: string) {
+    this.router.navigate(['/result'], {
+      state: {
+        birdName: birdName
+      }
+    });
   }
 
 }

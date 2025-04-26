@@ -26,4 +26,8 @@ export const routes: Routes = [
     path: 'camera',
     loadComponent: () => import('./pages/camera/camera.page').then( m => m.CameraPage)
   },
+  {
+    path: 'result',
+    loadComponent: () => import('./pages/result/result.page').then( m => m.ResultPage)
+  },
 ];
