@@ -7,6 +7,7 @@ import { closeOutline, camera, imagesOutline, radioButtonOn, flashOutline } from
 import { RouterLinkWithHref } from '@angular/router';
 import { CameraService } from 'src/app/services/camera.service';
 import { LoadingController } from '@ionic/angular';
+import { BirdIdentificationService } from 'src/app/services/bird-identification.service';
 
 addIcons({
   "close-outline": closeOutline,
@@ -27,7 +28,8 @@ export class CameraPage implements OnInit {
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
 
   constructor(private cameraService: CameraService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private birdIdentificationService: BirdIdentificationService
   ) { }
 
   ngOnInit() { }
@@ -57,6 +59,9 @@ export class CameraPage implements OnInit {
 
       console.log('Captured Image:', imageData);
 
+      const birdName = await this.birdIdentificationService.identifyBird(imageData);
+      console.log('Identified Bird:', birdName);
+
       await loading.dismiss();
 
     } catch (error) {
@@ -77,8 +82,11 @@ export class CameraPage implements OnInit {
     try {
       const imageData = await this.cameraService.pickFromGallery();
       console.log("Gallery Image:", imageData);
-      await loading.dismiss();
 
+      const birdName = await this.birdIdentificationService.identifyBird(imageData);
+      console.log('Identified Bird:', birdName);
+
+      await loading.dismiss();
 
     } catch (error) {
       console.error("Error picking image:", error);
