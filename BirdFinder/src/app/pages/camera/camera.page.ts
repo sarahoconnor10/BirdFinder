@@ -58,15 +58,11 @@ export class CameraPage implements OnInit {
 
     try {
       const imageData = await this.cameraService.captureImage();
-
-      console.log('Captured Image:', imageData);
-
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
-      console.log('Identified Bird:', birdName);
-
-      this.goToResult(birdName, imageData);
 
       await loading.dismiss();
+
+      this.goToResult(birdName, imageData);
 
     } catch (error) {
       console.error("Error capturing image:", error);
@@ -108,8 +104,8 @@ export class CameraPage implements OnInit {
   goToResult(birdName: string, capturedImage: string) {
     this.router.navigate(['/result'], {
       state: {
-        birdName: birdName,
-        capturedImage: capturedImage
+        birdName,
+        capturedImage
       }
     });
   }

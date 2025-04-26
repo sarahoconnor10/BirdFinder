@@ -11,7 +11,7 @@ export class BirdInfoService {
 
   getBirdInfo(birdName: string): Promise<any> {
     const cleanedName = birdName.split('/')[0].trim();
-    const encodedName = encodeURIComponent(birdName.trim());
+    const encodedName = encodeURIComponent(cleanedName);
     const url = `${this.WIKIPEDIA_API_URL}${encodedName}`;
 
     return this.http.get<any>(url).toPromise();
