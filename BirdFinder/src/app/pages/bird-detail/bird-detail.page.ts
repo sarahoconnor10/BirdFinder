@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { IonicModule } from '@ionic/angular';
@@ -17,19 +16,37 @@ import { IonicModule } from '@ionic/angular';
 export class BirdDetailPage implements OnInit {
   birdName: string = '';
   capturedImage: string = '';
+  professionalImageUrl: string = '';
   date: string = '';
+  scientificName: string = '';
+  description: string = '';
+  birdFunFact: string = '';
 
-  constructor(private router: Router) {
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as { birdName: string, capturedImage: string, date: string };
+  constructor() { }
 
-    if (state) {
-      this.birdName = state.birdName;
-      this.capturedImage = state.capturedImage;
-      this.date = state.date;
-    }
-  }
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    const state = window.history.state as {
+      birdName: string,
+      capturedImage?: string,
+      professionalImageUrl?: string,
+      date?: string,
+      scientificName?: string,
+      description?: string,
+      funFact?: string
+    };
+
+    if (state && state.birdName) {
+      this.birdName = state.birdName;
+      this.capturedImage = state.capturedImage || '';
+      this.professionalImageUrl = state.professionalImageUrl || '';
+      this.date = state.date || '';
+      this.scientificName = state.scientificName || '';
+      this.description = state.description || '';
+      this.birdFunFact = state.funFact || '';
+    }
   }
 
 }

@@ -5,20 +5,30 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="bird-image">
-    <img [src]="capturedImage" alt="Bird Image" />
+  <div *ngIf="capturedImage">
+    <h3>Your Photo</h3>
+    <img [src]="capturedImage" alt="Captured Bird" class="bird-photo" />
   </div>
 
-  <div class="bird-info">
-    <h1>{{ birdName }}</h1>
-
-    <h2>Date Saved:</h2>
-    <p>{{ date | date:'medium' }}</p>
+  <div *ngIf="professionalImageUrl">
+    <h3>Professional Image</h3>
+    <img [src]="professionalImageUrl" alt="Bird Photo" class="bird-photo" />
   </div>
 
-  <ion-button routerLink="/collection" expand="block" class="ion-margin-top">
-    Back to Collection
-  </ion-button>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ birdName }}</ion-card-title>
+      <ion-card-subtitle *ngIf="scientificName">{{ scientificName }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="description">{{ description }}</p>
+      <p *ngIf="date">Spotted on: {{ date | date:'medium' }}</p>
+      <div *ngIf="birdFunFact" class="fun-fact">
+        <h4>Fun Fact:</h4>
+        <p>{{ birdFunFact }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
 <ion-footer>

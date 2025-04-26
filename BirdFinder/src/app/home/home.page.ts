@@ -7,6 +7,7 @@ import { EbirdService } from '../services/ebird.service';
 import { BirdImageService } from '../services/bird-image.service';
 import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from '../components/navbar/navbar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomePage {
 
   constructor(private birdCollectionService: BirdCollectionService,
     private ebirdService: EbirdService,
-    private birdImageService: BirdImageService
+    private birdImageService: BirdImageService,
+    private router: Router
   ) { }
 
   ionViewWillEnter() {
@@ -75,6 +77,15 @@ export class HomePage {
       this.localSpecies = [];
     }
   }
+
+  viewBirdDetails(bird: any) {
+    this.router.navigate(['/bird-detail'], {
+      state: {
+        birdName: bird.name
+      }
+    });
+  }
+
 
 
 
