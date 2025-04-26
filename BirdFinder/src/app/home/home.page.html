@@ -1,18 +1,26 @@
-<!-- HOME PAGE -->
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>BirdFinder</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <h2>Recently Spotted</h2>
+  <ion-list *ngIf="recentBirds.length > 0; else noRecent">
+    <ion-item *ngFor="let bird of recentBirds">
+      <ion-thumbnail slot="start">
+        <img [src]="bird.image" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ bird.name }}</h2>
+        <p>Spotted on {{ bird.date | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noRecent>
+    <p>No birds spotted yet. Go find some!</p>
+  </ng-template>
 
   <div id="container">
     <ion-buttons>
@@ -22,8 +30,6 @@
       <ion-button [routerLink]="['/collection']">Collection</ion-button>
       <ion-button [routerLink]="['/profile']">Profile</ion-button>
     </ion-buttons>
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer"
-        href="https://ionicframework.com/docs/components">UI Components</a></p>
+
   </div>
 </ion-content>
