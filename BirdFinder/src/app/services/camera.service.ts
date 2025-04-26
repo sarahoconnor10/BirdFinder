@@ -36,4 +36,20 @@ export class CameraService {
     }
   }
 
+  async captureImage(videoElement: HTMLVideoElement): Promise<string> {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      throw new Error('Canvas context not available');
+    }
+
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    const imageData = canvas.toDataURL('image/jpeg');
+    return imageData;
+  }
+
 }

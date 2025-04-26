@@ -27,7 +27,7 @@ export class CameraPage implements OnInit {
 
   constructor(private cameraService: CameraService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngAfterViewInit() {
     this.startCamera();
@@ -42,8 +42,14 @@ export class CameraPage implements OnInit {
   }
 
   captureImage() {
-    console.log("Image captured");
+    const video = this.videoElement.nativeElement;
 
+    this.cameraService.captureImage(video).then(imageData => {
+      console.log("Image captured: ", imageData);
+
+    }).catch(error => {
+      console.error("Error capturing image: ", error);
+    });
   }
 
 
