@@ -1,17 +1,23 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>collection</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button>
-      </ion-back-button>
-    </ion-buttons>
+    <ion-title>My Bird Collection</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">collection</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-list *ngIf="birds.length > 0; else noBirds">
+    <ion-item *ngFor="let bird of birds">
+      <ion-thumbnail slot="start">
+        <img [src]="bird.image" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ bird.name }}</h2>
+        <p>Saved on {{ bird.date | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noBirds>
+    <p>No birds saved yet. Go find some!</p>
+  </ng-template>
 </ion-content>
