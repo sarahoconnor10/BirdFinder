@@ -1,17 +1,37 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button>
-      </ion-back-button>
-    </ion-buttons>
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <div class="profile-header">
+    <ion-avatar>
+      <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Avatar">
+    </ion-avatar>
+    <h2>{{ userName }}</h2>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Dark Mode</ion-label>
+      <ion-toggle [(ngModel)]="darkModeEnabled" (ionChange)="toggleDarkMode()"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Notifications</ion-label>
+      <ion-toggle [(ngModel)]="notificationsEnabled"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-card class="about-card">
+    <ion-card-header>
+      <ion-card-title>About BirdFinder</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      BirdFinder helps you identify and track bird species you encounter.
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
