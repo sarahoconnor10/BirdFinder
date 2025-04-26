@@ -41,15 +41,13 @@ export class CameraPage implements OnInit {
     this.cameraService.startCamera(this.videoElement.nativeElement);
   }
 
-  captureImage() {
-    const video = this.videoElement.nativeElement;
-
-    this.cameraService.captureImage(video).then(imageData => {
-      console.log("Image captured: ", imageData);
-
-    }).catch(error => {
-      console.error("Error capturing image: ", error);
-    });
+  async captureImage() {
+    try {
+      const imageData = await this.cameraService.captureImage();
+      console.log('Captured Image:', imageData);
+    } catch (error) {
+      console.error("Error capturing image:", error);
+    }
   }
 
 

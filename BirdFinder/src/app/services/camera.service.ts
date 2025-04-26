@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Injectable({
   providedIn: 'root'
@@ -36,20 +37,17 @@ export class CameraService {
     }
   }
 
-  async captureImage(videoElement: HTMLVideoElement): Promise<string> {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-
-    if (!context) {
-      throw new Error('Canvas context not available');
+  async captureImage(): Promise<string> {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+    if (!image.dataUrl) {
+      throw new Error('No image data available');
     }
-
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-    const imageData = canvas.toDataURL('image/jpeg');
-    return imageData;
+    return image.dataUrl;
   }
 
 }
