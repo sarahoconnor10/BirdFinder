@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonBackButton, IonList, IonItem, IonThumbnail, IonLabel } from '@ionic/angular/standalone';
 import { RouterLinkWithHref } from '@angular/router';
 import { BirdCollectionService } from '../services/bird-collection.service';
 import { CommonModule } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
 import { EbirdService } from '../services/ebird.service';
 import { BirdImageService } from '../services/bird-image.service';
-
+import { IonicModule } from '@ionic/angular';
+import { NavbarComponent } from '../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, RouterLinkWithHref, IonBackButton, IonList, IonItem, IonThumbnail, IonLabel],
+  imports: [IonicModule, CommonModule, RouterLinkWithHref, NavbarComponent],
 })
 export class HomePage {
   recentBirds: any[] = [];

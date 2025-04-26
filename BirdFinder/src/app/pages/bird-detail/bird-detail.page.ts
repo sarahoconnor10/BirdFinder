@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonButtons } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
+import { IonicModule } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-bird-detail',
   templateUrl: './bird-detail.page.html',
   styleUrls: ['./bird-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonButtons, RouterLinkWithHref]
+  imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref, NavbarComponent]
 })
 export class BirdDetailPage implements OnInit {
   birdName: string = '';

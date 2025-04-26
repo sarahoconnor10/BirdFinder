@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/angular/standalone';
 import { BirdCollectionService } from 'src/app/services/bird-collection.service';
 import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.page.html',
   styleUrls: ['./collection.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonBackButton, IonList, IonThumbnail, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption]
+  imports: [IonicModule, CommonModule, FormsModule, NavbarComponent]
 })
 
 export class CollectionPage implements OnInit {

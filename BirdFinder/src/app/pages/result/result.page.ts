@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,14 +7,16 @@ import { BirdInfoService } from 'src/app/services/bird-info.service';
 import { BirdCollectionService } from 'src/app/services/bird-collection.service';
 import { ToastController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-result',
   templateUrl: './result.page.html',
   styleUrls: ['./result.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, RouterLinkWithHref]
+  imports: [CommonModule, FormsModule, IonicModule, RouterLinkWithHref, NavbarComponent]
 })
+
 export class ResultPage {
   birdName: string = "Unknown";
   capturedImage: string = "";
