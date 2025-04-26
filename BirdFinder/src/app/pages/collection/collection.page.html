@@ -1,10 +1,11 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>My Bird Collection</ion-title>
+  <ion-toolbar class="header">
+    <div class="title">BirdFinder</div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <h1>My Collection</h1>
   <ion-list *ngIf="birds.length > 0; else noBirds">
     <ion-item-sliding *ngFor="let bird of birds">
       <ion-item (click)="viewBirdDetails(bird)">

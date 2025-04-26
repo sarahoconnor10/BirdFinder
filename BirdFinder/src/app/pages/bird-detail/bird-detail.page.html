@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>{{ birdName }}</ion-title>
+  <ion-toolbar class="header">
+    <div class="title">BirdFinder</div>
   </ion-toolbar>
 </ion-header>
 
@@ -10,8 +10,7 @@
   </div>
 
   <div class="bird-info">
-    <h2>Bird Name:</h2>
-    <p>{{ birdName }}</p>
+    <h1>{{ birdName }}</h1>
 
     <h2>Date Saved:</h2>
     <p>{{ date | date:'medium' }}</p>
