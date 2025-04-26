@@ -5,6 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, Ion
 import { addIcons } from 'ionicons';
 import { closeOutline, camera, imagesOutline, radioButtonOn, flashOutline } from 'ionicons/icons';
 import { RouterLinkWithHref } from '@angular/router';
+import { CameraService } from 'src/app/services/camera.service';
 
 addIcons({
   "close-outline": closeOutline,
@@ -24,9 +25,20 @@ addIcons({
 export class CameraPage implements OnInit {
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
 
-  constructor() { }
+  constructor(private cameraService: CameraService) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.startCamera();
+  }
+
+  ngOnDestroy() {
+    this.cameraService.stopCamera();
+  }
+
+  startCamera() {
+    this.cameraService.startCamera(this.videoElement.nativeElement);
   }
 
   captureImage() {

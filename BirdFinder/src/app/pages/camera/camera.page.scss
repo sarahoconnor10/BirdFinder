@@ -1,0 +1,45 @@
+
+
+.camera-container {
+    border: 1px solid black;
+    border-radius: 20px;
+    max-width: 90%;
+    height: 75%;
+    margin: 5px auto;
+}
+
+.camera-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    z-index: 3;
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.capture-button {
+    --padding: 0;
+    width: 70px;
+    height: 70px;
+    margin: 0 20px;
+    --border-radius: 50%;
+    --background: rgba(118, 115, 115, 0.3);
+}
+.camera-content {
+    --background: #6c72723f;
+}
