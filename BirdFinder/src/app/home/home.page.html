@@ -22,14 +22,18 @@
     <p>No birds spotted yet. Go find some!</p>
   </ng-template>
 
-  <div id="container">
-    <ion-buttons>
-      <ion-button [routerLink]="['/home']">Home</ion-button>
-      <ion-button [routerLink]="['/search']">Search</ion-button>
-      <ion-button [routerLink]="['/camera']">Camera</ion-button>
-      <ion-button [routerLink]="['/collection']">Collection</ion-button>
-      <ion-button [routerLink]="['/profile']">Profile</ion-button>
-    </ion-buttons>
+  <h2 class="ion-margin-top">Local Species</h2>
+  <ion-list *ngIf="localSpecies.length > 0; else noLocal">
+    <ion-item *ngFor="let species of localSpecies">
+      <ion-label>
+        <h2>{{ species.name }}</h2>
+        <p>Observed nearby</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-  </div>
+  <ng-template #noLocal>
+    <p>No local species found yet.</p>
+  </ng-template>
+
 </ion-content>

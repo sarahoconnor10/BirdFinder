@@ -3,6 +3,9 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, Ion
 import { RouterLinkWithHref } from '@angular/router';
 import { BirdCollectionService } from '../services/bird-collection.service';
 import { CommonModule } from '@angular/common';
+import { Geolocation } from '@capacitor/geolocation';
+import { EbirdService } from '../services/ebird.service';
+
 
 @Component({
   selector: 'app-home',
@@ -12,16 +15,54 @@ import { CommonModule } from '@angular/common';
 })
 export class HomePage {
   recentBirds: any[] = [];
+  localSpecies: any[] = [];
 
-  constructor(private birdCollectionService: BirdCollectionService) { }
+
+  constructor(private birdCollectionService: BirdCollectionService,
+    private ebirdService: EbirdService
+  ) { }
 
   ionViewWillEnter() {
     this.loadRecentBirds();
+    this.loadLocalSpecies();
   }
 
   loadRecentBirds() {
     const allBirds = this.birdCollectionService.getSavedBirds();
     this.recentBirds = allBirds.reverse().slice(0, 5);
+  }
+
+  async loadLocalSpecies() {
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log('Current position:', coordinates);
+
+      const latitude = coordinates.coords.latitude;
+      const longitude = coordinates.coords.longitude;
+
+      console.log(`User is at lat: ${latitude}, lng: ${longitude}`);
+
+      await this.fetchLocalBirds(latitude, longitude);
+    } catch (error) {
+      console.error('Error getting location:', error);
+      this.localSpecies = [];
+    }
+  }
+
+  async fetchLocalBirds(lat: number, lon: number) {
+    try {
+      const birds = await this.ebirdService.getNearbyBirds(lat, lon);
+      console.log('Nearby birds:', birds);
+
+      this.localSpecies = birds.map(bird => ({
+        name: bird.comName,
+        scientificName: bird.sciName,
+        dateObserved: bird.obsDt
+      }));
+    } catch (error) {
+      console.error('Error fetching local birds:', error);
+      this.localSpecies = [];
+    }
   }
 
 }
