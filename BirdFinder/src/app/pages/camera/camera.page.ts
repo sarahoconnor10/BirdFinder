@@ -6,6 +6,7 @@ import { addIcons } from 'ionicons';
 import { closeOutline, camera, imagesOutline, radioButtonOn, flashOutline } from 'ionicons/icons';
 import { RouterLinkWithHref } from '@angular/router';
 import { CameraService } from 'src/app/services/camera.service';
+import { LoadingController } from '@ionic/angular';
 
 addIcons({
   "close-outline": closeOutline,
@@ -25,7 +26,9 @@ addIcons({
 export class CameraPage implements OnInit {
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
 
-  constructor(private cameraService: CameraService) { }
+  constructor(private cameraService: CameraService,
+    private loadingController: LoadingController
+  ) { }
 
   ngOnInit() { }
 
@@ -42,22 +45,45 @@ export class CameraPage implements OnInit {
   }
 
   async captureImage() {
+    const loading = await this.loadingController.create({
+      message: 'Identifying bird...',
+      spinner: 'crescent',
+      backdropDismiss: false
+    });
+    await loading.present();
+
     try {
       const imageData = await this.cameraService.captureImage();
+
       console.log('Captured Image:', imageData);
+
+      await loading.dismiss();
+
     } catch (error) {
       console.error("Error capturing image:", error);
+      await loading.dismiss();
     }
   }
 
 
   async openGallery() {
+    const loading = await this.loadingController.create({
+      message: 'Identifying bird...',
+      spinner: 'crescent',
+      backdropDismiss: false
+    });
+    await loading.present();
+
     try {
       const imageData = await this.cameraService.pickFromGallery();
       console.log("Gallery Image:", imageData);
+      await loading.dismiss();
+
 
     } catch (error) {
       console.error("Error picking image:", error);
+      await loading.dismiss();
+
     }
   }
 
