@@ -64,7 +64,7 @@ export class CameraPage implements OnInit {
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
       console.log('Identified Bird:', birdName);
 
-      this.goToResult(birdName);
+      this.goToResult(birdName, imageData);
 
       await loading.dismiss();
 
@@ -90,7 +90,7 @@ export class CameraPage implements OnInit {
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
       console.log('Identified Bird:', birdName);
 
-      this.goToResult(birdName);
+      this.goToResult(birdName, imageData);
 
       await loading.dismiss();
 
@@ -105,10 +105,11 @@ export class CameraPage implements OnInit {
     console.log("Flash toggled");
   }
 
-  goToResult(birdName: string) {
+  goToResult(birdName: string, capturedImage: string) {
     this.router.navigate(['/result'], {
       state: {
-        birdName: birdName
+        birdName: birdName,
+        capturedImage: capturedImage
       }
     });
   }

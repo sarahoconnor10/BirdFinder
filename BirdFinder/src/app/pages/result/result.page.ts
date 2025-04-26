@@ -14,13 +14,15 @@ import { RouterLinkWithHref } from '@angular/router';
 })
 export class ResultPage implements OnInit {
   birdName: string = 'Unknown';
+  capturedImage: string = '';
 
   constructor(private router: Router) {
     const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as { birdName: string };
+    const state = nav?.extras.state as { birdName: string, capturedImage: string };
 
     if (state && state.birdName) {
       this.birdName = state.birdName;
+      this.capturedImage = state.capturedImage;
     }
   }
 

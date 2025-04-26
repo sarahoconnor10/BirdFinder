@@ -6,7 +6,18 @@
 
 <ion-content class="ion-padding">
   <h1>🎉 It's a {{ birdName }}!</h1>
+  <div class="images">
+    <h2>Your Photo:</h2>
+    <img [src]="capturedImage" alt="Captured Bird" />
 
+    <!-- <h2>Professional Image:</h2>
+    <img [src]="professionalImageUrl" alt="Professional Bird Image" *ngIf="professionalImageUrl"> -->
+  </div>
+
+  <div class="bird-info">
+    <h2>About the {{ birdName }}:</h2>
+    <!-- <p>{{ birdInfo }}</p> -->
+  </div>
   <ion-button routerLink="/home" expand="block" class="ion-margin-top">
     Go Home
   </ion-button>
