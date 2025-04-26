@@ -50,4 +50,18 @@ export class CameraService {
     return image.dataUrl;
   }
 
+  async pickFromGallery(): Promise<string> {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Photos
+    });
+
+    if (!image.dataUrl) {
+      throw new Error('No image data available');
+    }
+    return image.dataUrl;
+  }
+
 }

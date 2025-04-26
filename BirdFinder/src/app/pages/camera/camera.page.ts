@@ -51,9 +51,14 @@ export class CameraPage implements OnInit {
   }
 
 
-  openGallery() {
-    console.log("Gallery opened");
+  async openGallery() {
+    try {
+      const imageData = await this.cameraService.pickFromGallery();
+      console.log("Gallery Image:", imageData);
 
+    } catch (error) {
+      console.error("Error picking image:", error);
+    }
   }
 
   toggleFlash() {
