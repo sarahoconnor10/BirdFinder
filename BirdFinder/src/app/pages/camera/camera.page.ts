@@ -49,15 +49,21 @@ export class CameraPage implements OnInit {
   }
 
   async captureImage() {
-    const loading = await this.loadingController.create({
-      message: 'Identifying bird...',
-      spinner: 'crescent',
-      backdropDismiss: false
-    });
-    await loading.present();
-
     try {
       const imageData = await this.cameraService.captureImage();
+
+      if (!imageData) {
+        console.warn('No image captured.');
+        return;
+      }
+
+      const loading = await this.loadingController.create({
+        message: 'Identifying bird...',
+        spinner: 'crescent',
+        backdropDismiss: false
+      });
+      await loading.present();
+
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
 
       await loading.dismiss();
@@ -65,37 +71,38 @@ export class CameraPage implements OnInit {
       this.goToResult(birdName, imageData);
 
     } catch (error) {
-      console.error("Error capturing image:", error);
-      await loading.dismiss();
+      console.error('Error capturing or identifying image:', error);
     }
   }
 
 
   async openGallery() {
-    const loading = await this.loadingController.create({
-      message: 'Identifying bird...',
-      spinner: 'crescent',
-      backdropDismiss: false
-    });
-    await loading.present();
-
     try {
       const imageData = await this.cameraService.pickFromGallery();
-      console.log("Gallery Image:", imageData);
+
+      if (!imageData) {
+        console.warn('No image selected.');
+        return;
+      }
+
+      const loading = await this.loadingController.create({
+        message: 'Identifying bird...',
+        spinner: 'crescent',
+        backdropDismiss: false
+      });
+      await loading.present();
 
       const birdName = await this.birdIdentificationService.identifyBird(imageData);
-      console.log('Identified Bird:', birdName);
+
+      await loading.dismiss();
 
       this.goToResult(birdName, imageData);
 
-      await loading.dismiss();
-
     } catch (error) {
-      console.error("Error picking image:", error);
-      await loading.dismiss();
-
+      console.error('Error selecting or identifying image:', error);
     }
   }
+
 
   toggleFlash() {
     console.log("Flash toggled");
