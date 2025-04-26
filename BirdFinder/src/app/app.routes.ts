@@ -10,4 +10,20 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'search',
+    loadComponent: () => import('./pages/search/search.page').then( m => m.SearchPage)
+  },
+  {
+    path: 'collection',
+    loadComponent: () => import('./pages/collection/collection.page').then( m => m.CollectionPage)
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+  },
+  {
+    path: 'camera',
+    loadComponent: () => import('./pages/camera/camera.page').then( m => m.CameraPage)
+  },
 ];

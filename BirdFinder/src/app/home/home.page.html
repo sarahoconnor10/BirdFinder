@@ -1,3 +1,4 @@
+<!-- HOME PAGE -->
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -14,7 +15,15 @@
   </ion-header>
 
   <div id="container">
+    <ion-buttons>
+      <ion-button [routerLink]="['/home']">Home</ion-button>
+      <ion-button [routerLink]="['/search']">Search</ion-button>
+      <ion-button [routerLink]="['/camera']">Camera</ion-button>
+      <ion-button [routerLink]="['/collection']">Collection</ion-button>
+      <ion-button [routerLink]="['/profile']">Profile</ion-button>
+    </ion-buttons>
     <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer"
+        href="https://ionicframework.com/docs/components">UI Components</a></p>
   </div>
 </ion-content>
