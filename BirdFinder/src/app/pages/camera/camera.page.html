@@ -1,17 +1,36 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>camera</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button>
-      </ion-back-button>
+    <ion-title>Camera</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/home']">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">camera</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="camera-container">
+    <!-- video stream live from camera -->
+    <video #videoElement class="camera-feed" autoplay playsinline></video>
+
+    <!-- instructional message e.g. point at bird -->
+    <div class="camera-overlay">
+      <p>Point camera at bird</p>
+    </div>
+
+    <div class="camera-controls">
+      <ion-button (click)="openGallery()" fill="clear">
+        <ion-icon name="images-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="captureImage()" class="capture-button">
+        <ion-icon name="radio-button-on" id="captureButton"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="toggleFlash()" fill="clear">
+        <ion-icon name="flash-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
