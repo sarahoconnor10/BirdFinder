@@ -7,7 +7,7 @@
 <ion-content class="ion-padding">
   <ion-list *ngIf="birds.length > 0; else noBirds">
     <ion-item-sliding *ngFor="let bird of birds">
-      <ion-item>
+      <ion-item (click)="viewBirdDetails(bird)">
         <ion-thumbnail slot="start">
           <img [src]="bird.image" />
         </ion-thumbnail>

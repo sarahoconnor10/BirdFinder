@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ birdName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="bird-image">
+    <img [src]="capturedImage" alt="Bird Image" />
+  </div>
+
+  <div class="bird-info">
+    <h2>Bird Name:</h2>
+    <p>{{ birdName }}</p>
+
+    <h2>Date Saved:</h2>
+    <p>{{ date | date:'medium' }}</p>
+  </div>
+
+  <ion-button routerLink="/collection" expand="block" class="ion-margin-top">
+    Back to Collection
+  </ion-button>
+</ion-content>
