@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLinkWithHref } from '@angular/router';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { IonicModule } from '@ionic/angular';
-
+import { BirdInfoService } from 'src/app/services/bird-info.service';
 
 @Component({
   selector: 'app-bird-detail',
@@ -21,31 +21,36 @@ export class BirdDetailPage implements OnInit {
   scientificName: string = '';
   description: string = '';
   birdFunFact: string = '';
+  familyName: string = '';
+  genusName: string = '';
 
-  constructor() { }
+  constructor(private birdInfoService: BirdInfoService) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    const state = window.history.state as {
-      birdName: string,
-      capturedImage?: string,
-      professionalImageUrl?: string,
-      date?: string,
-      scientificName?: string,
-      description?: string,
-      funFact?: string
-    };
+    const state = window.history.state as { birdName: string };
 
     if (state && state.birdName) {
       this.birdName = state.birdName;
-      this.capturedImage = state.capturedImage || '';
-      this.professionalImageUrl = state.professionalImageUrl || '';
-      this.date = state.date || '';
-      this.scientificName = state.scientificName || '';
-      this.description = state.description || '';
-      this.birdFunFact = state.funFact || '';
+      this.loadBirdInfo();
+      //this.loadBirdFunFact();
+    }
+  }
+
+  async loadBirdInfo() {
+    try {
+      const info = await this.birdInfoService.getBirdInfoINat(this.birdName);
+
+      this.professionalImageUrl = info.imageUrl;
+      this.description = info.wikiUrl;
+      this.scientificName = info.scientificName;
+      this.familyName = info.family;
+      this.genusName = info.genus;
+    } catch (error) {
+      console.error('Error fetching bird info:', error);
+      this.description = 'Could not find information about this bird.';
     }
   }
 

@@ -16,4 +16,30 @@ export class BirdInfoService {
 
     return this.http.get<any>(url).toPromise();
   }
+
+  async getBirdInfoINat(birdName: string) {
+    const cleanedName = birdName.split('/')[0].trim();
+    const encodedName = encodeURIComponent(cleanedName);
+    const url = `https://api.inaturalist.org/v1/taxa?q=${encodedName}&rank=species`;
+    try {
+      const response: any = await this.http.get(url).toPromise();
+      const result = response.results[0];
+
+      if (!result) {
+        throw new Error('No bird found.');
+      }
+
+      return {
+        commonName: result.preferred_common_name || '',
+        scientificName: result.name || '',
+        family: result.family?.name || '',
+        genus: result.genus?.name || '',
+        imageUrl: result.default_photo?.medium_url || '',
+        wikiUrl: result.wikipedia_url || ''
+      };
+    } catch (error) {
+      console.error('Error fetching bird data from iNaturalist:', error);
+      throw error;
+    }
+  }
 }
