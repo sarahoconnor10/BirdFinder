@@ -6,6 +6,7 @@ import { BirdCollectionService } from 'src/app/services/bird-collection.service'
 import { ToastController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 interface SavedBird {
   name: string;
@@ -42,7 +43,8 @@ export class ResultPage {
 
   constructor(private router: Router,
     private birdCollectionService: BirdCollectionService,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private storageService: StorageService) {
 
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras.state as { birdInfo: any, capturedImage: string };
@@ -54,27 +56,37 @@ export class ResultPage {
   }
 
   async saveToCollection() {
-    const bird: SavedBird = {
-      name: this.birdInfo.commonName,
-      scientificName: this.birdInfo.scientificName,
-      habitat: this.birdInfo.habitat,
-      rarity: this.birdInfo.rarity,
-      funFact: this.birdInfo.funFact,
-      description: this.birdInfo.shortDescription,
-      image: this.capturedImage,
-      date: new Date().toISOString()
-    };
+    try {
+      let imageUrl = '';
 
-    this.birdCollectionService.saveBird(bird);
-    console.log('Bird saved:', bird);
+      if (this.capturedImage) {
+        imageUrl = await this.storageService.uploadImage(this.capturedImage);
+      }
 
-    const toast = await this.toastController.create({
-      message: 'Bird saved to collection!',
-      duration: 2000,
-      color: 'success',
-      position: 'bottom'
-    });
+      const bird: SavedBird = {
+        name: this.birdInfo.commonName,
+        scientificName: this.birdInfo.scientificName,
+        habitat: this.birdInfo.habitat,
+        rarity: this.birdInfo.rarity,
+        funFact: this.birdInfo.funFact,
+        description: this.birdInfo.shortDescription,
+        image: imageUrl,
+        date: new Date().toISOString()
+      };
 
-    await toast.present();
+      this.birdCollectionService.saveBird(bird);
+      console.log('Bird saved:', bird);
+
+      const toast = await this.toastController.create({
+        message: 'Bird saved to collection!',
+        duration: 2000,
+        color: 'success',
+        position: 'bottom'
+      });
+
+      await toast.present();
+    } catch (error) {
+      console.error('Error saving bird:', error);
+    }
   }
 }
