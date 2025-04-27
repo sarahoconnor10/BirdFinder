@@ -5,26 +5,57 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>🎉 It's a {{ birdInfo.commonName }}!</h1>
+  <!-- Bird Common Name -->
+  <h1>{{ birdInfo.commonName }}</h1>
 
-  <div class="images">
-    <h2>Your Photo:</h2>
-    <img [src]="capturedImage" alt="Captured Bird" />
+  <!-- Scientific Name -->
+  <p *ngIf="birdInfo.scientificName"><strong>Scientific Name:</strong> {{ birdInfo.scientificName }}</p>
 
-    <ng-container *ngIf="professionalImageUrl">
-      <h2>Professional Image:</h2>
-      <img [src]="professionalImageUrl" alt="Professional Bird Image" />
-    </ng-container>
+  <!-- Bird Image -->
+  <div *ngIf="capturedImage">
+    <h2>Your Photo</h2>
+    <img [src]="capturedImage" alt="Captured Bird" class="bird-photo" />
   </div>
 
-  <div class="bird-info">
-    <h2>About the {{ birdInfo.commonName }}:</h2>
-    <p>Scientific name: {{ birdInfo.scientificName }}</p>
-    <p>Habitat: {{ birdInfo.habitat }}</p>
-    <p>Rarity: {{ birdInfo.rarity }}</p>
-    <p>Description: {{ birdInfo.shortDescription }}</p>
-    <p>Fun Fact: {{ birdInfo.funFact }}</p>
-  </div>
+  <!-- Habitat -->
+  <ion-card *ngIf="birdInfo.habitat">
+    <ion-card-header>
+      <ion-card-title>Habitat</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.habitat }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Rarity -->
+  <ion-card *ngIf="birdInfo.rarity">
+    <ion-card-header>
+      <ion-card-title>Rarity</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.rarity }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Fun Fact -->
+  <ion-card *ngIf="birdInfo.funFact">
+    <ion-card-header>
+      <ion-card-title>Fun Fact</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.funFact }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- About Bird -->
+  <ion-card *ngIf="birdInfo.shortDescription">
+    <ion-card-header>
+      <ion-card-title>About {{ birdInfo.commonName }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.shortDescription }}
+    </ion-card-content>
+  </ion-card>
 
   <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top">
     Save to Collection
