@@ -25,13 +25,13 @@ export class HomePage {
     private router: Router
   ) { }
 
-  ionViewWillEnter() {
-    this.loadRecentBirds();
+  async ionViewWillEnter() {
+    await this.loadRecentBirds();
     this.loadLocalSpecies();
   }
 
-  loadRecentBirds() {
-    const allBirds = this.birdCollectionService.getSavedBirds();
+  async loadRecentBirds() {
+    const allBirds = await this.birdCollectionService.getSavedBirds();
     this.recentBirds = allBirds.reverse().slice(0, 5);
   }
 

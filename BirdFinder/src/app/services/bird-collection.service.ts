@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BirdCollectionService {
-  private STORAGE_KEY = 'savedBirds';
+  private apiUrl = 'http://localhost:5000';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getSavedBirds(): any[] {
-    const birds = localStorage.getItem(this.STORAGE_KEY);
-    return birds ? JSON.parse(birds) : [];
+  saveBird(bird: any) {
+    return this.http.post(`${this.apiUrl}/saveBird`, bird).toPromise();
   }
 
-  saveBird(bird: any): void {
-    const birds = this.getSavedBirds();
-    birds.push(bird);
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(birds));
-  }
-
-  saveAllBirds(birds: any[]): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(birds));
+  getSavedBirds(): Promise<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/birds`).toPromise()
+      .then(response => response || [])
+      .catch(error => {
+        console.error('Error fetching birds:', error);
+        return [];
+      });
   }
 }

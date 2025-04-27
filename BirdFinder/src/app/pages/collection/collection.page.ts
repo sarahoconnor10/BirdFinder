@@ -21,21 +21,20 @@ export class CollectionPage implements OnInit {
     private router: Router
   ) { }
 
-  ionViewWillEnter() {
-    this.loadBirds();
+  async ionViewWillEnter() {
+    await this.loadBirds();
   }
 
   ngOnInit() {
   }
 
-  loadBirds() {
-    this.birds = this.birdCollectionService.getSavedBirds();
+  async loadBirds() {
+    this.birds = await this.birdCollectionService.getSavedBirds();
     console.log('Loaded birds:', this.birds);
   }
 
   deleteBird(birdToDelete: any) {
     this.birds = this.birds.filter(bird => bird !== birdToDelete);
-    this.birdCollectionService.saveAllBirds(this.birds);
   }
 
   viewBirdDetails(bird: any) {
