@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterLinkWithHref } from '@angular/router';
 import { BirdCollectionService } from '../services/bird-collection.service';
 import { CommonModule } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonicModule, CommonModule, RouterLinkWithHref, NavbarComponent],
+  imports: [IonicModule, CommonModule, NavbarComponent],
 })
 export class HomePage {
   recentBirds: any[] = [];

@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RouterLinkWithHref } from '@angular/router';
-import { BirdInfoService, BirdDetails } from 'src/app/services/bird-info.service';
 import { BirdCollectionService } from 'src/app/services/bird-collection.service';
 import { ToastController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
@@ -12,65 +10,57 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 interface SavedBird {
   name: string;
   scientificName: string;
-  genus: string;
+  habitat: string;
+  rarity: string;
+  funFact: string;
+  description: string;
   image: string;
   date: string;
 }
+
+/**
+ * commonName: The common name of the bird.
+            - scientificName: The scientific (Latin) name.
+            - habitat: The typical habitat of this bird.
+            - rarity: One of Common, Uncommon, Rare.
+            - funFact: One interesting real fact about the bird.
+            - shortDescription:
+ */
 
 @Component({
   selector: 'app-result',
   templateUrl: './result.page.html',
   styleUrls: ['./result.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, RouterLinkWithHref, NavbarComponent]
+  imports: [CommonModule, FormsModule, IonicModule, NavbarComponent]
 })
 
 export class ResultPage {
-  birdName: string = "Unknown";
-  capturedImage: string = "";
-  professionalImageUrl: string = "";
-  scientificName: string = "Unknown";
-  birdFunFact = "";
-  birdGenus: string = "";
+  birdInfo: any = {};
+  capturedImage: string = '';
+  professionalImageUrl: string = '';
 
   constructor(private router: Router,
-    private birdInfoService: BirdInfoService,
     private birdCollectionService: BirdCollectionService,
-    private toastController: ToastController
-  ) {
+    private toastController: ToastController) {
+
     const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as { birdName: string, capturedImage: string };
+    const state = nav?.extras.state as { birdInfo: any, capturedImage: string };
 
-    if (state && state.birdName) {
-      this.birdName = state.birdName;
+    if (state && state.birdInfo) {
+      this.birdInfo = state.birdInfo;
       this.capturedImage = state.capturedImage;
-    }
-  }
-
-  ionViewWillEnter() {
-    this.loadBirdInfo();
-  }
-
-  async loadBirdInfo() {
-    try {
-      const birdDetails: BirdDetails = await this.birdInfoService.getBirdDetails(this.birdName);
-
-      this.professionalImageUrl = birdDetails.imageUrl || '';
-      this.birdGenus = birdDetails.genus;
-      this.scientificName = birdDetails.scientificName || 'Unknown';
-
-      console.log('Bird details loaded:', birdDetails);
-
-    } catch (error) {
-      console.error("Error fetching bird info:", error);
     }
   }
 
   async saveToCollection() {
     const bird: SavedBird = {
-      name: this.birdName,
-      scientificName: this.scientificName,
-      genus: this.birdGenus,
+      name: this.birdInfo.commonName,
+      scientificName: this.birdInfo.scientificName,
+      habitat: this.birdInfo.habitat,
+      rarity: this.birdInfo.rarity,
+      funFact: this.birdInfo.funFact,
+      description: this.birdInfo.shortDescription,
       image: this.capturedImage,
       date: new Date().toISOString()
     };

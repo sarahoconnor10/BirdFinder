@@ -31,7 +31,7 @@ export class BirdInfoService {
   }
 
 
-  private async getBirdInfoWikipedia(birdName: string): Promise<BirdDetails> {
+  async getBirdInfoWikipedia(birdName: string): Promise<BirdDetails> {
     const cleanedName = birdName.split('/')[0].trim();
     const encodedName = encodeURIComponent(cleanedName);
     const url = `${this.WIKIPEDIA_API_URL}${encodedName}`;
@@ -57,7 +57,7 @@ export class BirdInfoService {
     }
   }
 
-  private async getBirdInfoINat(birdName: string): Promise<BirdDetails> {
+  async getBirdInfoINat(birdName: string): Promise<BirdDetails> {
     const cleanedName = birdName.split('/')[0].trim();
     const encodedName = encodeURIComponent(cleanedName);
     const url = `${this.INAT_API_URL}${encodedName}&rank=species`;

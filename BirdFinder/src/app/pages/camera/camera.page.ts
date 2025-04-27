@@ -65,11 +65,11 @@ export class CameraPage implements OnInit {
       });
       await loading.present();
 
-      const birdName = await this.birdIdentificationService.identifyBird(imageData);
+      const birdInfo = await this.birdIdentificationService.identifyBird(imageData);
 
       await loading.dismiss();
 
-      this.goToResult(birdName, imageData);
+      this.goToResult(birdInfo, imageData);
 
     } catch (error) {
       console.error('Error capturing or identifying image:', error);
@@ -93,11 +93,11 @@ export class CameraPage implements OnInit {
       });
       await loading.present();
 
-      const birdName = await this.birdIdentificationService.identifyBird(imageData);
+      const birdInfo = await this.birdIdentificationService.identifyBird(imageData);
 
       await loading.dismiss();
 
-      this.goToResult(birdName, imageData);
+      this.goToResult(birdInfo, imageData);
 
     } catch (error) {
       console.error('Error selecting or identifying image:', error);
@@ -109,10 +109,10 @@ export class CameraPage implements OnInit {
     console.log("Flash toggled");
   }
 
-  goToResult(birdName: string, capturedImage: string) {
+  goToResult(birdInfo: any, capturedImage: string) {
     this.router.navigate(['/result'], {
       state: {
-        birdName,
+        birdInfo,
         capturedImage
       }
     });

@@ -17,7 +17,7 @@ export class EbirdService {
     });
 
     const url = `${this.API_URL}?lat=${lat}&lng=${lon}&maxResults=10`;
-
+    console.log(url);
     return this.http.get<any[]>(url, { headers }).toPromise()
       .then(response => response || [])
       .catch(error => {

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>🎉 It's a {{ birdName }}!</h1>
+  <h1>🎉 It's a {{ birdInfo.commonName }}!</h1>
 
   <div class="images">
     <h2>Your Photo:</h2>
@@ -18,17 +18,19 @@
   </div>
 
   <div class="bird-info">
-    <h2>About the {{ birdName }}:</h2>
-    <p>Genus: {{ birdGenus }}</p>
-    <p>Scientific name: {{ scientificName }}</p>
-
+    <h2>About the {{ birdInfo.commonName }}:</h2>
+    <p>Scientific name: {{ birdInfo.scientificName }}</p>
+    <p>Habitat: {{ birdInfo.habitat }}</p>
+    <p>Rarity: {{ birdInfo.rarity }}</p>
+    <p>Description: {{ birdInfo.shortDescription }}</p>
+    <p>Fun Fact: {{ birdInfo.funFact }}</p>
   </div>
-
 
   <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top">
     Save to Collection
   </ion-button>
-  <ion-button routerLink="/home" expand="block" class="ion-margin-top">
-    Go Home
-  </ion-button>
 </ion-content>
+
+<ion-footer>
+  <app-navbar></app-navbar>
+</ion-footer>

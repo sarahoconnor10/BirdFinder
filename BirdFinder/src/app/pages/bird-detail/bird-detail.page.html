@@ -23,10 +23,6 @@
     <ion-card-content>
       <p *ngIf="description">{{ description }}</p>
       <p *ngIf="date">Spotted on: {{ date | date:'medium' }}</p>
-      <div *ngIf="birdFunFact" class="fun-fact">
-        <h4>Fun Fact:</h4>
-        <p>{{ birdFunFact }}</p>
-      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

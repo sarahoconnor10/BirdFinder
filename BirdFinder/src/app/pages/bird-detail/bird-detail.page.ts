@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLinkWithHref } from '@angular/router';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { IonicModule } from '@ionic/angular';
 import { BirdInfoService } from 'src/app/services/bird-info.service';
@@ -11,7 +10,7 @@ import { BirdInfoService } from 'src/app/services/bird-info.service';
   templateUrl: './bird-detail.page.html',
   styleUrls: ['./bird-detail.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref, NavbarComponent]
+  imports: [IonicModule, CommonModule, FormsModule, NavbarComponent]
 })
 export class BirdDetailPage implements OnInit {
   birdName: string = '';
