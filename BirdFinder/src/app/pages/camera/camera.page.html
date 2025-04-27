@@ -9,28 +9,29 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="camera-content">
-  <div class="camera-container">
-    <!-- video stream live from camera -->
-    <video #videoElement class="camera-feed" autoplay playsinline></video>
+<ion-content>
+  <div class="camera-page">
 
-    <!-- instructional message e.g. point at bird -->
-    <div class="camera-overlay">
-      <p>Point camera at bird</p>
+    <div class="camera-container">
+      <video #videoElement class="camera-feed" autoplay playsinline></video>
+
+      <div class="camera-overlay">
+        <p>Point camera at bird</p>
+      </div>
     </div>
 
     <div class="camera-controls">
-      <ion-button (click)="openGallery()" fill="clear">
+      <div class="gallery-button" (click)="openGallery()">
         <ion-icon name="images-outline"></ion-icon>
-      </ion-button>
+      </div>
 
-      <ion-button (click)="captureImage()" class="capture-button">
-        <ion-icon name="radio-button-on" id="captureButton"></ion-icon>
-      </ion-button>
+      <button class="capture-button" (click)="captureImage()">
+        <div class="capture-circle"></div>
+      </button>
 
-      <ion-button (click)="toggleFlash()" fill="clear">
+      <div class="flash-button" (click)="toggleFlash()">
         <ion-icon name="flash-outline"></ion-icon>
-      </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>

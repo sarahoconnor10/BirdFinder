@@ -5,19 +5,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Bird Common Name -->
   <h1>{{ birdInfo.commonName }}</h1>
 
-  <!-- Scientific Name -->
   <p *ngIf="birdInfo.scientificName"><strong>Scientific Name:</strong> {{ birdInfo.scientificName }}</p>
 
-  <!-- Bird Image -->
   <div *ngIf="capturedImage">
     <h2>Your Photo</h2>
     <img [src]="capturedImage" alt="Captured Bird" class="bird-photo" />
   </div>
 
-  <!-- Habitat -->
   <ion-card *ngIf="birdInfo.habitat">
     <ion-card-header>
       <ion-card-title>Habitat</ion-card-title>
@@ -27,7 +23,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Rarity -->
   <ion-card *ngIf="birdInfo.rarity">
     <ion-card-header>
       <ion-card-title>Rarity</ion-card-title>
@@ -37,7 +32,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Fun Fact -->
   <ion-card *ngIf="birdInfo.funFact">
     <ion-card-header>
       <ion-card-title>Fun Fact</ion-card-title>
@@ -47,7 +41,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- About Bird -->
   <ion-card *ngIf="birdInfo.shortDescription">
     <ion-card-header>
       <ion-card-title>About {{ birdInfo.commonName }}</ion-card-title>
@@ -57,8 +50,11 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top">
-    Save to Collection
+  <ion-button (click)="saveToCollection()" expand="block" color="success" class="ion-margin-top save-button"
+    [disabled]="isSaving">
+    <ion-spinner name="dots" *ngIf="isSaving"></ion-spinner>
+    <span *ngIf="!isSaving">Save to Collection</span>
+    <span *ngIf="isSaving">Saving...</span>
   </ion-button>
 </ion-content>
 

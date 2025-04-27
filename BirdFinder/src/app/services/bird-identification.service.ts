@@ -1,3 +1,11 @@
+/**
+* Bird Identification Service
+* 
+* This service uses Google's Gemini AI model to identify bird species from images
+* and to retrieve detailed information about birds by name.
+* It handles API communication and response processing.
+*/
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -8,8 +16,19 @@ export class BirdIdentificationService {
   private GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
   private GEMINI_API_KEY = 'AIzaSyCSNoZIQ4oW0q1RorP5nEE4iebhsoBZpWg';
 
+  /**
+  * Constructor for BirdIdentificationService
+  * 
+  * @param http Angular HttpClient for making API requests
+  */
   constructor(private http: HttpClient) { }
 
+  /**
+    * Identifies a bird from a base64-encoded image using Google's Gemini AI
+    * 
+    * @param base64Image The base64-encoded image data to analyze
+    * @returns Promise that resolves to structured bird information
+    */
   async identifyBird(base64Image: string): Promise<string> {
     const requestBody = {
       contents: [
@@ -53,7 +72,6 @@ export class BirdIdentificationService {
     const url = `${this.GEMINI_API_URL}?key=${this.GEMINI_API_KEY}`;
 
     const response = await this.http.post<any>(url, requestBody, { headers }).toPromise();
-    console.log('Gemini raw response:', response);
 
     const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
 
@@ -62,13 +80,16 @@ export class BirdIdentificationService {
       .replace(/```/g, '')
       .trim();
 
-    console.log('Cleaned Gemini response:', cleanedText);
-
-
     const birdInfo = JSON.parse(cleanedText);
     return birdInfo;
   }
 
+  /**
+  * Retrieves detailed information about a bird species by name
+  * 
+  * @param birdName The common name of the bird to get information about
+  * @returns Promise that resolves to structured detailed bird information
+  */
   async getBirdInfoByName(birdName: string): Promise<any> {
     const requestBody = {
       contents: [
@@ -115,7 +136,6 @@ export class BirdIdentificationService {
 
     try {
       const response = await this.http.post<any>(url, requestBody, { headers }).toPromise();
-      console.log('Gemini raw response:', response);
 
       const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
 
@@ -123,8 +143,6 @@ export class BirdIdentificationService {
         .replace(/```json/g, '')
         .replace(/```/g, '')
         .trim();
-
-      console.log('Cleaned Gemini response:', cleanedText);
 
       const birdInfo = JSON.parse(cleanedText);
       return birdInfo;
@@ -140,5 +158,4 @@ export class BirdIdentificationService {
       };
     }
   }
-
 }

@@ -1,3 +1,11 @@
+/**
+* Bird Detail Page Component
+* 
+* Displays detailed information about a specific bird species.
+* This page shows both user-captured images (if bird has been spotted), and professional 
+* images, along with detailed information about the bird species.
+*/
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -31,15 +39,27 @@ export class BirdDetailPage implements OnInit {
   isLoading: boolean = false;
   isInCollection: boolean = false;
 
-  constructor(private birdCollectionService: BirdCollectionService,
+  /**
+   * Constructor for BirdDetailPage
+   * 
+   * @param birdCollectionService Service to check if bird is in user's collection
+   * @param birdImageService Service to retrieve professional bird images
+   * @param birdIdentificationService Service to get detailed bird information
+   * @param loadingController Ionic loading controller for loading indicators
+   */
+  constructor(
+    private birdCollectionService: BirdCollectionService,
     private birdImageService: BirdImageService,
     private birdIdentificationService: BirdIdentificationService,
     private loadingController: LoadingController
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
+  /**
+    * Ionic lifecycle hook that runs when the page is about to enter
+    * Retrieves bird information passed through router state
+    */
   async ionViewWillEnter() {
     const state = window.history.state as {
       birdName: string,
@@ -57,6 +77,10 @@ export class BirdDetailPage implements OnInit {
     }
   }
 
+  /**
+  * Loads detailed information about the bird from external services
+  * Displays a loading indicator during the process
+  */
   async loadBirdDetails() {
     const loading = await this.loadingController.create({
       message: 'Loading bird information...',
@@ -66,9 +90,7 @@ export class BirdDetailPage implements OnInit {
 
     try {
       this.professionalImageUrl = await this.birdImageService.getBirdImageUrl(this.birdName);
-
       this.birdInfo = await this.birdIdentificationService.getBirdInfoByName(this.birdName);
-      console.log('Bird info loaded:', this.birdInfo);
     } catch (error) {
       console.error('Error loading bird details:', error);
     } finally {
@@ -76,8 +98,10 @@ export class BirdDetailPage implements OnInit {
     }
   }
 
+  /**
+  * Checks if this bird species is already in the user's collection
+  */
   async checkIfInCollection() {
     this.isInCollection = await this.birdCollectionService.hasBirdInCollection(this.birdName);
   }
-
 }

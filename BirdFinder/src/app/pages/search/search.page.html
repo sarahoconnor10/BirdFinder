@@ -11,13 +11,11 @@
     </ion-searchbar>
   </div>
 
-  <!-- Loading indicator -->
   <div class="loading-container" *ngIf="isLoading">
     <ion-spinner name="crescent"></ion-spinner>
     <p>Searching for birds...</p>
   </div>
 
-  <!-- Results list -->
   <ion-list *ngIf="searchResults.length > 0">
     <ion-item *ngFor="let bird of searchResults">
       <ion-thumbnail slot="start" *ngIf="bird.image">
@@ -34,12 +32,10 @@
     </ion-item>
   </ion-list>
 
-  <!-- No results message -->
   <div class="no-results" *ngIf="searchPerformed && searchResults.length === 0 && !isLoading">
     <p>No birds found matching "{{ searchQuery }}"</p>
   </div>
 
-  <!-- Initial search prompt -->
   <div class="search-prompt" *ngIf="!searchPerformed && !isLoading">
     <p>Type a bird name to search</p>
   </div>

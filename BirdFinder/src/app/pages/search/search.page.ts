@@ -1,3 +1,11 @@
+/**
+* Search Page Component
+* 
+* This page allows users to search for birds by name.
+* It implements a debounced search that triggers after the user stops typing,
+* providing a smooth user experience without excessive API calls.
+*/
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +15,6 @@ import { BirdSearchService } from 'src/app/services/bird-search.service';
 import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-search',
@@ -24,11 +31,21 @@ export class SearchPage implements OnInit {
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
+  /**
+  * Constructor for SearchPage
+  * 
+  * @param birdSearchService Service to search for birds
+  * @param router Angular Router for navigation
+  */
   constructor(
     private birdSearchService: BirdSearchService,
     private router: Router
   ) { }
 
+  /**
+  * Angular lifecycle hook that runs after component initialization
+  * Sets up the debounced search functionality
+  */
   ngOnInit() {
     this.searchSubject.pipe(
       debounceTime(500),
@@ -38,15 +55,30 @@ export class SearchPage implements OnInit {
     });
   }
 
+  /**
+  * Angular lifecycle hook that runs when component is about to be destroyed
+  * Cleans up subscriptions to prevent memory leaks
+  */
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  /**
+  * Triggered when user types in the search input
+  * Passes the current search query to the debounced subject
+  * 
+  * @param event Input change event
+  */
   onSearchChange(event: any) {
     this.searchSubject.next(this.searchQuery);
   }
 
+  /**
+  * Performs the search operation after debounce delay
+  * 
+  * @param query The search string to look for
+  */
   async performSearch(query: string) {
     if (!query || query.trim().length < 2) {
       this.searchResults = [];
@@ -67,6 +99,11 @@ export class SearchPage implements OnInit {
     }
   }
 
+  /**
+  * Navigates to the bird detail page for the selected bird
+  * 
+  * @param bird The bird object to view details for
+  */
   viewBirdDetails(bird: any) {
     this.router.navigate(['/bird-detail'], {
       state: {
@@ -75,11 +112,12 @@ export class SearchPage implements OnInit {
     });
   }
 
+  /**
+   * Handles image loading errors by replacing with a placeholder
+   * 
+   * @param event The error event from the image element
+   */
   handleImageError(event: any) {
-    // Replace broken images with a placeholder
     event.target.src = 'assets/placeholder.png';
   }
-
-
-
 }

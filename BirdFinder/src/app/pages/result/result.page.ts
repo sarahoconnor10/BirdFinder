@@ -1,3 +1,11 @@
+/**
+* Result Page Component
+* 
+* This page displays the bird identification results and allows the user
+* to save the identified bird to their collection. The page receives bird
+* information and the captured image from the camera page.
+*/
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +16,9 @@ import { IonicModule } from '@ionic/angular';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { StorageService } from 'src/app/services/storage.service';
 
+/**
+* Interface defining the structure of a bird record to be saved to the database
+*/
 interface SavedBird {
   name: string;
   scientificName: string;
@@ -19,15 +30,6 @@ interface SavedBird {
   date: string;
 }
 
-/**
- * commonName: The common name of the bird.
-            - scientificName: The scientific (Latin) name.
-            - habitat: The typical habitat of this bird.
-            - rarity: One of Common, Uncommon, Rare.
-            - funFact: One interesting real fact about the bird.
-            - shortDescription:
- */
-
 @Component({
   selector: 'app-result',
   templateUrl: './result.page.html',
@@ -35,17 +37,31 @@ interface SavedBird {
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, NavbarComponent]
 })
-
 export class ResultPage {
   birdInfo: any = {};
   capturedImage: string = '';
   professionalImageUrl: string = '';
+  isSaving: boolean = false;
 
-  constructor(private router: Router,
+  /**
+  * Constructor for ResultPage
+  * 
+  * @param router Angular Router for navigation
+  * @param birdCollectionService Service to save birds to MongoDB
+  * @param toastController Ionic toast controller for notifications
+  * @param storageService Service to upload images to Firebase storage
+  */
+  constructor(
+    private router: Router,
     private birdCollectionService: BirdCollectionService,
     private toastController: ToastController,
-    private storageService: StorageService) { }
+    private storageService: StorageService
+  ) { }
 
+  /**
+  * Ionic lifecycle hook that runs when the page is about to enter
+  * Retrieves bird information passed through router state
+  */
   ionViewWillEnter() {
     const state = window.history.state as { birdInfo: any, capturedImage: string };
 
@@ -57,7 +73,15 @@ export class ResultPage {
     }
   }
 
+  /**
+    * Saves the identified bird to the user's collection
+    * 1. Uploads the image to Firebase Storage
+    * 2. Saves the bird data to MongoDB
+    * 3. Shows confirmation and navigates to collection page
+    */
   async saveToCollection() {
+    this.isSaving = true;
+
     try {
       let imageUrl = '';
 
@@ -83,24 +107,30 @@ export class ResultPage {
       console.log('Saving bird with data:', bird);
       await this.birdCollectionService.saveBird(bird);
 
-
       const toast = await this.toastController.create({
         message: 'Bird saved to collection!',
         duration: 2000,
         color: 'success',
-        position: 'bottom'
+        position: 'top'
       });
 
       await toast.present();
+
+      setTimeout(() => {
+        this.router.navigate(['/collection']);
+      }, 1500);
+
     } catch (error) {
       console.error('Error saving bird:', error);
       const toast = await this.toastController.create({
         message: 'Error saving bird to collection',
         duration: 2000,
         color: 'danger',
-        position: 'bottom'
+        position: 'top'
       });
       await toast.present();
+    } finally {
+      this.isSaving = false;
     }
   }
 }

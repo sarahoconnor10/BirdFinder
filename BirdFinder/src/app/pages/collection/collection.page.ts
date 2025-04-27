@@ -1,3 +1,12 @@
+/**
+* Collection Page Component
+* 
+* This page displays all birds the user has saved to their collection.
+* Users can view details of each bird or delete birds from their collection.
+* The data is stored in MongoDB and Firebase storage, and retrieved via the 
+* BirdCollectionService.
+*/
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,16 +23,28 @@ import { LoadingController, ToastController } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, NavbarComponent]
 })
-
 export class CollectionPage implements OnInit {
   birds: any[] = [];
 
-  constructor(private birdCollectionService: BirdCollectionService,
+  /**
+  * Constructor for CollectionPage
+  * 
+  * @param birdCollectionService Service to access saved bird data in MongoDB
+  * @param router Angular Router for navigation
+  * @param loadingController Ionic loading controller for loading indicators
+  * @param toastController Ionic toast controller for notifications
+  */
+  constructor(
+    private birdCollectionService: BirdCollectionService,
     private router: Router,
     private loadingController: LoadingController,
     private toastController: ToastController
   ) { }
 
+  /**
+  * Ionic lifecycle hook that runs when the page is about to enter
+  * Asynchronously loads the user's bird collection
+  */
   async ionViewWillEnter() {
     await this.loadBirds();
   }
@@ -31,6 +52,9 @@ export class CollectionPage implements OnInit {
   ngOnInit() {
   }
 
+  /**
+  * Fetches all saved birds from the database and prepares them for display
+  */
   async loadBirds() {
     try {
       const birds = await this.birdCollectionService.getSavedBirds();
@@ -48,50 +72,55 @@ export class CollectionPage implements OnInit {
     }
   }
 
+  /**
+   * Deletes a bird from the user's collection
+   * Shows loading indicator and confirmation toast
+   * 
+   * @param birdToDelete The bird object to be deleted
+   */
   async deleteBird(birdToDelete: any) {
     try {
-      // Show loading indicator
       const loading = await this.loadingController.create({
         message: 'Deleting...',
         duration: 2000
       });
       await loading.present();
 
-      // Make sure we have the bird's ID
       if (!birdToDelete._id) {
         console.error('Cannot delete bird without ID');
         throw new Error('Bird has no ID');
       }
 
-      // Call the service to delete from MongoDB
       await this.birdCollectionService.deleteBird(birdToDelete._id);
 
-      // Remove from local array after successful deletion
       this.birds = this.birds.filter(bird => bird._id !== birdToDelete._id);
 
-      // Display success message
       const toast = await this.toastController.create({
         message: 'Bird removed from collection',
         duration: 2000,
         color: 'success',
-        position: 'bottom'
+        position: 'top'
       });
       await toast.present();
 
     } catch (error) {
       console.error('Error deleting bird:', error);
 
-      // Show error message
       const toast = await this.toastController.create({
         message: 'Failed to delete bird',
         duration: 2000,
         color: 'danger',
-        position: 'bottom'
+        position: 'top'
       });
       await toast.present();
     }
   }
 
+  /**
+  * Navigates to the bird detail page for the selected bird
+  * 
+  * @param bird The bird object to view details for
+  */
   viewBirdDetails(bird: any) {
     this.router.navigate(['/bird-detail'], {
       state: {
