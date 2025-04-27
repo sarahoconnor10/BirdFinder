@@ -41,4 +41,19 @@ export class BirdCollectionService {
         throw error;
       });
   }
+
+  async hasBirdInCollection(birdName: string): Promise<boolean> {
+    try {
+      const birds = await this.getSavedBirds();
+      
+      const foundBird = birds.find(bird => 
+        bird.name.toLowerCase() === birdName.toLowerCase()
+      );
+      
+      return !!foundBird;
+    } catch (error) {
+      console.error('Error checking if bird is in collection:', error);
+      return false; 
+    }
+  }
 }

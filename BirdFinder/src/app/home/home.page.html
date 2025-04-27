@@ -25,8 +25,9 @@
   <h2 class="ion-margin-top">Local Species</h2>
   <ion-list *ngIf="localSpecies.length > 0; else noLocal">
     <ion-item *ngFor="let species of localSpecies" (click)="viewBirdDetails(species)">
-      <ion-thumbnail slot="start" *ngIf="species.image">
-        <img [src]="species.image" alt="{{ species.name }}" />
+      <ion-thumbnail slot="start">
+        <img [src]="species.image || 'assets/placeholder.png'" alt="{{ species.name }}"
+          (error)="handleImageError($event)" />
       </ion-thumbnail>
       <ion-label>
         <h2>{{ species.name }}</h2>

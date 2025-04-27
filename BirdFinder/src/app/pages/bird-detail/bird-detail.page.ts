@@ -3,7 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { IonicModule } from '@ionic/angular';
-import { BirdInfoService } from 'src/app/services/bird-info.service';
+import { BirdImageService } from 'src/app/services/bird-image.service';
+import { BirdIdentificationService } from 'src/app/services/bird-identification.service';
+import { LoadingController } from '@ionic/angular';
+import { BirdCollectionService } from 'src/app/services/bird-collection.service';
+import { addIcons } from 'ionicons';
+import { checkmarkCircle, removeCircle } from 'ionicons/icons';
+
+addIcons({
+  'checkmark-circle': checkmarkCircle,
+  'remove-circle': removeCircle,
+});
 
 @Component({
   selector: 'app-bird-detail',
@@ -15,42 +25,59 @@ import { BirdInfoService } from 'src/app/services/bird-info.service';
 export class BirdDetailPage implements OnInit {
   birdName: string = '';
   capturedImage: string = '';
-  professionalImageUrl: string = '';
+  professionalImageUrl: any = '';
   date: string = '';
-  scientificName: string = '';
-  description: string = '';
-  birdFunFact: string = '';
-  familyName: string = '';
-  genusName: string = '';
+  birdInfo: any = {};
+  isLoading: boolean = false;
+  isInCollection: boolean = false;
 
-  constructor(private birdInfoService: BirdInfoService) { }
+  constructor(private birdCollectionService: BirdCollectionService,
+    private birdImageService: BirdImageService,
+    private birdIdentificationService: BirdIdentificationService,
+    private loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
-    const state = window.history.state as { birdName: string };
+  async ionViewWillEnter() {
+    const state = window.history.state as {
+      birdName: string,
+      capturedImage?: string,
+      date?: string
+    };
 
     if (state && state.birdName) {
       this.birdName = state.birdName;
-      this.loadBirdInfo();
-      //this.loadBirdFunFact();
+      this.capturedImage = state.capturedImage || '';
+      this.date = state.date || '';
+
+      await this.loadBirdDetails();
+      await this.checkIfInCollection();
     }
   }
 
-  async loadBirdInfo() {
-    try {
-      const info = await this.birdInfoService.getBirdInfoINat(this.birdName);
+  async loadBirdDetails() {
+    const loading = await this.loadingController.create({
+      message: 'Loading bird information...',
+      spinner: 'crescent'
+    });
+    await loading.present();
 
-      this.professionalImageUrl = info.imageUrl;
-      this.description = info.wikiUrl;
-      this.scientificName = info.scientificName;
-      this.familyName = info.family;
-      this.genusName = info.genus;
+    try {
+      this.professionalImageUrl = await this.birdImageService.getBirdImageUrl(this.birdName);
+
+      this.birdInfo = await this.birdIdentificationService.getBirdInfoByName(this.birdName);
+      console.log('Bird info loaded:', this.birdInfo);
     } catch (error) {
-      console.error('Error fetching bird info:', error);
-      this.description = 'Could not find information about this bird.';
+      console.error('Error loading bird details:', error);
+    } finally {
+      await loading.dismiss();
     }
+  }
+
+  async checkIfInCollection() {
+    this.isInCollection = await this.birdCollectionService.hasBirdInCollection(this.birdName);
   }
 
 }

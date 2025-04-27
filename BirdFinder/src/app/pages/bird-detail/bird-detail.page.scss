@@ -1,0 +1,51 @@
+.scientific-name {
+    font-style: italic;
+    color: #666;
+    margin-top: 0;
+}
+
+.bird-photo {
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+ion-card {
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+ion-card-title {
+    color: #00724A;
+}
+
+.name-container {
+    margin-bottom: 16px;
+}
+
+.spotted-status {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 16px;
+    margin: 8px 0;
+    font-size: 14px;
+
+    ion-icon {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+}
+
+.spotted {
+    background-color: rgba(92, 184, 92, 0.2);
+    color: #5cb85c;
+}
+
+.not-spotted {
+    background-color: rgba(108, 117, 125, 0.2);
+    color: #6c757d;
+}

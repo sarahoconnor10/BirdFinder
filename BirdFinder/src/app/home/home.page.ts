@@ -55,34 +55,59 @@ export class HomePage {
   async fetchLocalBirds(lat: number, lon: number) {
     try {
       const birds = await this.ebirdService.getNearbyBirds(lat, lon);
-      // console.log('Nearby birds:', birds);
+      console.log('Nearby birds:', birds);
 
       const birdPromises = birds.map(async (bird) => {
-        const imageUrl = await this.birdImageService.getBirdImageUrl(bird.comName);
+        try {
+          let imageUrl = await this.birdImageService.getBirdImageUrl(bird.comName);
 
-        return {
-          name: bird.comName,
-          scientificName: bird.sciName,
-          dateObserved: bird.obsDt,
-          image: imageUrl
-        };
+          if (!imageUrl) {
+            const simplifiedName = bird.comName
+              .replace(/\(.*?\)/g, '')
+              .split(' ')[0]
+              .trim();
+
+            imageUrl = await this.birdImageService.getBirdImageUrl(simplifiedName);
+          }
+
+          return {
+            name: bird.comName,
+            scientificName: bird.sciName,
+            dateObserved: bird.obsDt,
+            image: imageUrl || 'assets/placeholder.png'
+          };
+        } catch (error) {
+          console.error(`Error getting image for ${bird.comName}:`, error);
+          return {
+            name: bird.comName,
+            scientificName: bird.sciName,
+            dateObserved: bird.obsDt,
+            image: 'assets/placeholder.png'
+          };
+        }
       });
 
-      this.localSpecies = await Promise.all(birdPromises);
+      const results = await Promise.allSettled(birdPromises);
 
-      // console.log('Local species with images:', this.localSpecies);
+      this.localSpecies = results
+        .filter(result => result.status === 'fulfilled')
+        .map(result => (result as PromiseFulfilledResult<any>).value);
+
     } catch (error) {
       console.error('Error fetching local birds:', error);
       this.localSpecies = [];
     }
   }
-
   viewBirdDetails(bird: any) {
     this.router.navigate(['/bird-detail'], {
       state: {
         birdName: bird.name
       }
     });
+  }
+
+  handleImageError(event: any) {
+    event.target.src = 'assets/placeholder.png';
   }
 
 

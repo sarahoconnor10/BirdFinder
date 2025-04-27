@@ -5,6 +5,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <!-- Bird Name -->
+  <h1>{{ birdInfo.commonName || birdName }}</h1>
+
+  <!-- Scientific Name -->
+  <p *ngIf="birdInfo.scientificName" class="scientific-name">
+    <em>{{ birdInfo.scientificName }}</em>
+  </p>
+
+  <!-- Bird Images -->
   <div *ngIf="capturedImage">
     <h3>Your Photo</h3>
     <img [src]="capturedImage" alt="Captured Bird" class="bird-photo" />
@@ -14,14 +23,71 @@
     <img [src]="professionalImageUrl" alt="Bird Photo" class="bird-photo" />
   </div>
 
-  <ion-card>
+  <div class="spotted-status" [ngClass]="{'spotted': isInCollection, 'not-spotted': !isInCollection}">
+    <ion-icon [name]="isInCollection ? 'checkmark-circle' : 'remove-circle'"></ion-icon>
+    {{ isInCollection ? 'Spotted in Your Collection' : 'Not Yet in Your Collection' }}
+  </div>
+
+  <!-- Description -->
+  <ion-card *ngIf="birdInfo.shortDescription">
     <ion-card-header>
-      <ion-card-title>{{ birdName }}</ion-card-title>
-      <ion-card-subtitle *ngIf="scientificName">{{ scientificName }}</ion-card-subtitle>
+      <ion-card-title>About</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p *ngIf="description">{{ description }}</p>
-      <p *ngIf="date">Spotted on: {{ date | date:'medium' }}</p>
+      {{ birdInfo.shortDescription }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Habitat -->
+  <ion-card *ngIf="birdInfo.habitat">
+    <ion-card-header>
+      <ion-card-title>Habitat</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.habitat }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Rarity and Conservation -->
+  <ion-card *ngIf="birdInfo.rarity || birdInfo.conservationStatus">
+    <ion-card-header>
+      <ion-card-title>Status</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="birdInfo.rarity"><strong>Rarity:</strong> {{ birdInfo.rarity }}</p>
+      <p *ngIf="birdInfo.conservationStatus"><strong>Conservation:</strong> {{ birdInfo.conservationStatus }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Diet and Behavior -->
+  <ion-card *ngIf="birdInfo.diet || birdInfo.behavior">
+    <ion-card-header>
+      <ion-card-title>Behavior</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="birdInfo.diet"><strong>Diet:</strong> {{ birdInfo.diet }}</p>
+      <p *ngIf="birdInfo.behavior"><strong>Behavior:</strong> {{ birdInfo.behavior }}</p>
+      <p *ngIf="birdInfo.lifespan"><strong>Lifespan:</strong> {{ birdInfo.lifespan }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Fun Fact -->
+  <ion-card *ngIf="birdInfo.funFact">
+    <ion-card-header>
+      <ion-card-title>Fun Fact</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ birdInfo.funFact }}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Observation Info -->
+  <ion-card *ngIf="date">
+    <ion-card-header>
+      <ion-card-title>Your Observation</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Date Spotted:</strong> {{ date | date:'medium' }}</p>
     </ion-card-content>
   </ion-card>
 </ion-content>
