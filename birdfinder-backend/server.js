@@ -23,7 +23,7 @@ const birdSchema = new mongoose.Schema({
     funFact: String,
     shortDescription: String,
     date: { type: Date, default: Date.now },
-    capturedImageLink: String
+    image: String
 });
 
 const Bird = mongoose.model('Bird', birdSchema);

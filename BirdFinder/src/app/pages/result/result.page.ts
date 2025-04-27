@@ -44,14 +44,16 @@ export class ResultPage {
   constructor(private router: Router,
     private birdCollectionService: BirdCollectionService,
     private toastController: ToastController,
-    private storageService: StorageService) {
+    private storageService: StorageService) { }
 
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as { birdInfo: any, capturedImage: string };
+  ionViewWillEnter() {
+    const state = window.history.state as { birdInfo: any, capturedImage: string };
 
     if (state && state.birdInfo) {
       this.birdInfo = state.birdInfo;
       this.capturedImage = state.capturedImage;
+    } else {
+      console.error('No navigation state found');
     }
   }
 
@@ -60,7 +62,11 @@ export class ResultPage {
       let imageUrl = '';
 
       if (this.capturedImage) {
+        console.log('Captured image exists, uploading to Firebase...');
         imageUrl = await this.storageService.uploadImage(this.capturedImage);
+        console.log('Image uploaded, URL:', imageUrl);
+      } else {
+        console.log('No captured image to upload');
       }
 
       const bird: SavedBird = {
@@ -74,8 +80,9 @@ export class ResultPage {
         date: new Date().toISOString()
       };
 
-      this.birdCollectionService.saveBird(bird);
-      console.log('Bird saved:', bird);
+      console.log('Saving bird with data:', bird);
+      await this.birdCollectionService.saveBird(bird);
+
 
       const toast = await this.toastController.create({
         message: 'Bird saved to collection!',
@@ -87,6 +94,13 @@ export class ResultPage {
       await toast.present();
     } catch (error) {
       console.error('Error saving bird:', error);
+      const toast = await this.toastController.create({
+        message: 'Error saving bird to collection',
+        duration: 2000,
+        color: 'danger',
+        position: 'bottom'
+      });
+      await toast.present();
     }
   }
 }
