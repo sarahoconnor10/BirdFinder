@@ -29,4 +29,16 @@ export class BirdCollectionService {
         return [];
       });
   }
+
+  deleteBird(birdId: string): Promise<any> {
+    return this.http.delete(`${this.apiUrl}/birds/${birdId}`).toPromise()
+      .then(response => {
+        console.log('Bird deleted from MongoDB:', response);
+        return response;
+      })
+      .catch(error => {
+        console.error('Error deleting bird from MongoDB:', error);
+        throw error;
+      });
+  }
 }
