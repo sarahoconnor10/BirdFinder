@@ -32,10 +32,10 @@ app.post('/saveBird', async (req, res) => {
     try {
         const bird = new Bird(req.body);
         await bird.save();
-        res.status(201).send('Bird saved!');
+        res.status(201).json({ message: 'Bird saved successfully!' });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error saving bird');
+        res.status(500).json({ message: 'Error saving bird' });
     }
 });
 
@@ -45,7 +45,7 @@ app.get('/birds', async (req, res) => {
         res.json(birds);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error fetching birds');
+        res.status(500).json({ message: 'Error fetching birds' });
     }
 });
 

@@ -8,7 +8,7 @@ export const environment = {
     apiKey: "AIzaSyCGDep6wFekgtXUqaeBM125HATrmgjo8c4",
     authDomain: "birdfinder-2c274.firebaseapp.com",
     projectId: "birdfinder-2c274",
-    storageBucket: "birdfinder-2c274.appspot.com", 
+    storageBucket: "birdfinder-2c274.firebasestorage.app",
     messagingSenderId: "1039917509290",
     appId: "1:1039917509290:web:a7fd1a2d7d9b67abfbfed3"
   }
