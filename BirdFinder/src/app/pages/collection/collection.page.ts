@@ -29,8 +29,20 @@ export class CollectionPage implements OnInit {
   }
 
   async loadBirds() {
-    this.birds = await this.birdCollectionService.getSavedBirds();
-    console.log('Loaded birds:', this.birds);
+    try {
+      const birds = await this.birdCollectionService.getSavedBirds();
+      console.log('Loaded birds from MongoDB:', birds);
+
+      this.birds = birds.map(bird => ({
+        ...bird,
+        image: bird.image || ''
+      }));
+
+      console.log('Processed birds for display:', this.birds);
+    } catch (error) {
+      console.error('Error loading birds:', error);
+      this.birds = [];
+    }
   }
 
   deleteBird(birdToDelete: any) {
