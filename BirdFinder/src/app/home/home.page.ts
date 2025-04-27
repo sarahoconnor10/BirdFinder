@@ -38,12 +38,12 @@ export class HomePage {
   async loadLocalSpecies() {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
-      console.log('Current position:', coordinates);
+      //console.log('Current position:', coordinates);
 
       const latitude = coordinates.coords.latitude;
       const longitude = coordinates.coords.longitude;
 
-      console.log(`User is at lat: ${latitude}, lng: ${longitude}`);
+      //console.log(`User is at lat: ${latitude}, lng: ${longitude}`);
 
       await this.fetchLocalBirds(latitude, longitude);
     } catch (error) {
@@ -55,7 +55,7 @@ export class HomePage {
   async fetchLocalBirds(lat: number, lon: number) {
     try {
       const birds = await this.ebirdService.getNearbyBirds(lat, lon);
-      console.log('Nearby birds:', birds);
+      // console.log('Nearby birds:', birds);
 
       const birdPromises = birds.map(async (bird) => {
         const imageUrl = await this.birdImageService.getBirdImageUrl(bird.comName);
@@ -70,7 +70,7 @@ export class HomePage {
 
       this.localSpecies = await Promise.all(birdPromises);
 
-      console.log('Local species with images:', this.localSpecies);
+      // console.log('Local species with images:', this.localSpecies);
     } catch (error) {
       console.error('Error fetching local birds:', error);
       this.localSpecies = [];

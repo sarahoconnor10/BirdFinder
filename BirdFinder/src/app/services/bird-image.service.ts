@@ -17,7 +17,7 @@ export class BirdImageService {
 
     try {
       const response: any = await this.http.get(url).toPromise();
-      console.log(`Wikipedia response for ${birdName}:`, response); // 👈 add this!
+      // console.log(`Wikipedia response for ${birdName}:`, response); // 👈 add this!
 
       const pages = response.query.pages;
       const pageId = Object.keys(pages)[0];
